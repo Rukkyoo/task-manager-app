@@ -1,5 +1,4 @@
-/* eslint-disable no-undef */
-const { CustomAPIError } = require("../errors/custom-error");
+import CustomAPIError from "../errors/custom-error.js";
 
 const errorHandlerMiddleware = (err, req, res, next) => {
   if (err instanceof CustomAPIError) {
@@ -8,4 +7,4 @@ const errorHandlerMiddleware = (err, req, res, next) => {
   return res.status(500).json({ msg: "Something went wrong" });
 };
 
-module.exports = errorHandlerMiddleware
+export default errorHandlerMiddleware;
