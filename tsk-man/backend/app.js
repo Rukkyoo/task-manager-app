@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(errorHandler);
 app.use("/api/v1/tasks", taskRouter);
 
-const port = 3000;
+const port = 7000;
 
 console.log(`Hello from port ${port} in app.js`);
 
