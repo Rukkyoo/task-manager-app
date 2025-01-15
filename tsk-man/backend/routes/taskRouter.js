@@ -1,11 +1,12 @@
 import express from "express";
 const router = express.Router();
-import createTask from "../controllers/task";
+import createToDo from "./../controllers/todo.js";
 
-/* router.route("/").get((req, res) => {
+router.route("/").get((req, res) => {
   res.send("all tasks")
-}) */
+})
 
-router.route("/").post(createTask);
+router.route("/").post(createToDo);
 
 export default router;
+

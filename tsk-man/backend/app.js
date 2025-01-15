@@ -22,6 +22,7 @@ const start = async () => {
     /*  app.get("/", (req, res) => {
       res.send("welcome to my task manager app");
     }); */
+    console.log("connected to db");
     app.listen(port, () => {
       console.log(`Server started on port ${port}`);
     });
