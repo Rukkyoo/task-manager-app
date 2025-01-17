@@ -6,9 +6,11 @@ import taskRouter from "./routes/taskRouter.js";
 import connectDB from "./db/connect.js";
 import dotenv from "dotenv";
 import process from 'node:process';
+import cors from "cors";
 dotenv.config();
 app.use(express.static("./src"));
 app.use(express.json());
+app.use(cors());
 /* app.use(notFound); */
 app.use(errorHandler);
 app.use("/api/v1/tasks", taskRouter);
