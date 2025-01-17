@@ -1,33 +1,58 @@
 import React, { useState } from "react";
+import axiosInstance from "./axiosInstance";
 
 function TaskManager() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [editingTask, setEditingTask] = useState(null);
 
-  const handleAddTask = (e) => {
+  const handleAddTask = async (e) => {
     e.preventDefault();
-    if (newTask.trim() !== "") {
-      setTasks([...tasks, { name: newTask, completed: false }]);
+    try {
+      const response = await axiosInstance.post("/tasks", { name: newTask });
+      setTasks([...tasks, response.data.todo]);
       setNewTask("");
+    } catch (error) {
+      console.error("Error adding task:", error);
     }
   };
+  /*     if (newTask.trim() !== "") {
+      setTasks([...tasks, { name: newTask, completed: false }]);
+      setNewTask("");
+    } */
 
   const handleEditTask = (index, newName) => {
-    if (newName.trim() !== "") {
+    axiosInstance.patch(`/tasks/${tasks[index]._id}`, { name: newName })
+      .then(response => {
+        console.log('Task updated:', response.data);
+        const updatedTasks = [...tasks];
+        updatedTasks[index].name = newName;
+        setTasks(updatedTasks);
+        setEditingTask(null);
+      })
+      .catch(error => {
+        console.error(error);
+      })
+/*     if (newName.trim() !== "") {
       const updatedTasks = [...tasks];
       updatedTasks[index].name = newName;
       setTasks(updatedTasks);
       setEditingTask(null);
-    }
+    } */
   };
 
-  const handleDeleteTask = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks.splice(index, 1);
-    setTasks(updatedTasks);
-  };
-
+const handleDeleteTask = (index) => {
+  axiosInstance.delete(`/tasks/${tasks[index]._id}`)
+    .then(response => {
+      console.log('Task deleted:', response.data);
+      const updatedTasks = [...tasks];
+      updatedTasks.splice(index, 1);
+      setTasks(updatedTasks);
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
   const handleToggleCompleted = (index) => {
     const updatedTasks = [...tasks];
     updatedTasks[index].completed = !updatedTasks[index].completed;
@@ -77,7 +102,7 @@ function TaskManager() {
                 />
                 <button
                   onClick={() => {
-                    setEditingTask(null);
+                    handleEditTask(index, task.name);
                   }}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2"
                 >
